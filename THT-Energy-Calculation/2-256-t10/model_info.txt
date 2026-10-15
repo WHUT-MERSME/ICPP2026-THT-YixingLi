@@ -1,0 +1,216 @@
+Model Architecture:
+vit_snn(
+  (patch_embed): SDT_SPS(
+    (proj_conv): Conv2d(2, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (proj_bn): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (proj_lif): MultiStepLIFNode(
+      v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+      (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+    )
+    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (proj_conv1): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (proj_bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (proj_lif1): MultiStepLIFNode(
+      v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+      (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+    )
+    (maxpool1): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (proj_conv2): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (proj_bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (proj_lif2): MultiStepLIFNode(
+      v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+      (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+    )
+    (maxpool2): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (proj_conv3): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (proj_bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (proj_lif3): MultiStepLIFNode(
+      v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+      (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+    )
+    (maxpool3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (rpe_conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (rpe_bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (rpe_lif): MultiStepLIFNode(
+      v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+      (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+    )
+  )
+  (block): ModuleList(
+    (0): SpikingTransformer(
+      (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (attn): SpikingSelfAttention(
+        (pool): Erode(
+          (pool): MaxPool3d(kernel_size=(1, 3, 3), stride=(1, 1, 1), padding=(0, 1, 1), dilation=1, ceil_mode=False)
+        )
+        (first_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (TIM): TIM(
+          (interactor): Conv1d(16, 16, kernel_size=(5,), stride=(1,), padding=(2,))
+          (in_lif): MultiStepLIFNode(
+            v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+            (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+          )
+          (out_lif): MultiStepLIFNode(
+            v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+            (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+          )
+        )
+        (q_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+        (q_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (q_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (k_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+        (k_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (k_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (v_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+        (v_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (v_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (talking_heads_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (attn_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (proj_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,))
+        (proj_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1_conv): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1))
+        (fc1_bn): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (fc1_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (fc2_conv): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1))
+        (fc2_bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (fc2_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+      )
+    )
+    (1): SpikingTransformer(
+      (norm1): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (attn): SpikingSelfAttention(
+        (pool): Erode(
+          (pool): MaxPool3d(kernel_size=(1, 3, 3), stride=(1, 1, 1), padding=(0, 1, 1), dilation=1, ceil_mode=False)
+        )
+        (first_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (TIM): TIM(
+          (interactor): Conv1d(16, 16, kernel_size=(5,), stride=(1,), padding=(2,))
+          (in_lif): MultiStepLIFNode(
+            v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+            (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+          )
+          (out_lif): MultiStepLIFNode(
+            v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+            (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+          )
+        )
+        (q_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+        (q_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (q_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (k_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+        (k_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (k_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (v_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+        (v_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (v_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (talking_heads_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (attn_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (proj_conv): Conv1d(256, 256, kernel_size=(1,), stride=(1,))
+        (proj_bn): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (drop_path): DropPath(drop_prob=0.100)
+      (norm2): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1_conv): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1))
+        (fc1_bn): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (fc1_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+        (fc2_conv): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1))
+        (fc2_bn): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (fc2_lif): MultiStepLIFNode(
+          v_threshold=1.0, v_reset=0.0, detach_reset=True, tau=1.5, backend=cupy
+          (surrogate_function): Sigmoid(alpha=4.0, spiking=True)
+        )
+      )
+    )
+  )
+  (norm): LayerNorm((256,), eps=1e-06, elementwise_affine=True)
+  (head): Linear(in_features=256, out_features=10, bias=True)
+)
+
+Convolutional Layers:
+Layer: patch_embed.proj_conv, kernel_size=3, input_feature_map_size=(128, 128), in_channels=2, out_channels=32
+Layer: patch_embed.proj_conv1, kernel_size=3, input_feature_map_size=(64, 64), in_channels=32, out_channels=64
+Layer: patch_embed.proj_conv2, kernel_size=3, input_feature_map_size=(32, 32), in_channels=64, out_channels=128
+Layer: patch_embed.proj_conv3, kernel_size=3, input_feature_map_size=(16, 16), in_channels=128, out_channels=256
+Layer: patch_embed.rpe_conv, kernel_size=3, input_feature_map_size=(8, 8), in_channels=256, out_channels=256
+Layer: block.0.attn.TIM.interactor, kernel_size=5, input_feature_map_size=unknown, in_channels=16, out_channels=16
+Layer: block.0.attn.q_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.0.attn.k_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.0.attn.v_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.0.attn.proj_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.0.mlp.fc1_conv, kernel_size=1, input_feature_map_size=(8, 8), in_channels=256, out_channels=1024
+Layer: block.0.mlp.fc2_conv, kernel_size=1, input_feature_map_size=(8, 8), in_channels=1024, out_channels=256
+Layer: block.1.attn.TIM.interactor, kernel_size=5, input_feature_map_size=unknown, in_channels=16, out_channels=16
+Layer: block.1.attn.q_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.1.attn.k_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.1.attn.v_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.1.attn.proj_conv, kernel_size=1, input_feature_map_size=unknown, in_channels=256, out_channels=256
+Layer: block.1.mlp.fc1_conv, kernel_size=1, input_feature_map_size=(8, 8), in_channels=256, out_channels=1024
+Layer: block.1.mlp.fc2_conv, kernel_size=1, input_feature_map_size=(8, 8), in_channels=1024, out_channels=256
+
+QKV Feature Map Dimensions:
+Layer: block.0.attn.q_conv, n=64, d=16
+Layer: block.1.attn.q_conv, n=64, d=16
+
+LIF Layers Firing Rates:
+Layer: SDT_SPS_lif, firing_rate=0.0796
+Layer: SDT_SPS_lif1, firing_rate=0.0300
+Layer: SDT_SPS_lif2, firing_rate=0.0314
+Layer: SDT_SPS_lif3, firing_rate=0.1213
+Layer: SpikingSelfAttention_first_lif, firing_rate=0.2153
+Layer: SpikingSelfAttention_q_lif, firing_rate=0.2915
+Layer: TIM_in_lif, firing_rate=0.9346
+Layer: TIM_out_lif, firing_rate=0.0002
+Layer: SpikingSelfAttention_k_lif, firing_rate=0.4648
+Layer: SpikingSelfAttention_v_lif, firing_rate=0.4537
+Layer: MLP_fc1_lif, firing_rate=0.2301
+Layer: MLP_fc2_lif, firing_rate=0.0281
